@@ -8,6 +8,8 @@ import android.net.NetworkInfo
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import com.ken.customerserviceagent.api.AgentApi
+import com.ken.customerserviceagent.api.AgentApiRepository
+import com.ken.customerserviceagent.api.AgentApiRepositoryImpl
 import com.ken.customerserviceagent.api.handler.ZonedDateTimeHandler
 import com.ken.customerserviceagent.data.Constants
 import dagger.Module
@@ -74,6 +76,12 @@ object AgentApiModule {
     @Singleton
     fun provideSharedPreferences(app: Application): SharedPreferences {
         return app.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAgentApiRepository(agentApi: AgentApi, sharedPreferences: SharedPreferences): AgentApiRepository {
+        return AgentApiRepositoryImpl(agentApi, sharedPreferences)
     }
 
     private fun hasNetwork(app : Application): Boolean? {

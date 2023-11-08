@@ -68,9 +68,13 @@ dependencies {
     debugImplementation libs.ui.test.manifest
     implementation libs.androidx.navigation.compose
     implementation libs.androidx.lifecycle.runtime.ktx.v251
+    implementation libs.androidx.material.icons.extended
+    implementation libs.lottie.compose
 
     // Kotlin coroutines
     implementation libs.kotlinx.coroutines.android
+    implementation libs.androidx.lifecycle.livedata.ktx
+    implementation libs.androidx.runtime.livedata
 
     // Dagger Hilt
     implementation libs.hilt.android

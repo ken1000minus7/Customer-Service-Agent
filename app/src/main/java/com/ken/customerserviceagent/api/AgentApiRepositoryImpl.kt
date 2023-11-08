@@ -5,9 +5,8 @@ import com.ken.customerserviceagent.data.Constants
 import com.ken.customerserviceagent.model.AgentApiResult
 import com.ken.customerserviceagent.model.AuthenticationRequest
 import com.ken.customerserviceagent.model.MessageRequest
-import javax.inject.Inject
 
-class AgentApiRepositoryImpl @Inject constructor(
+class AgentApiRepositoryImpl(
     private val agentApi: AgentApi,
     private val sharedPreferences: SharedPreferences
 ): AgentApiRepository {
