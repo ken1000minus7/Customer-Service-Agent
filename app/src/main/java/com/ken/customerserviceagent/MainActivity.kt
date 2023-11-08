@@ -9,10 +9,16 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.ken.customerserviceagent.data.Routes
+import com.ken.customerserviceagent.screens.HomeScreen
+import com.ken.customerserviceagent.screens.LoginScreen
+import com.ken.customerserviceagent.screens.SplashScreen
+import com.ken.customerserviceagent.screens.ThreadScreen
 import com.ken.customerserviceagent.ui.theme.CustomerServiceAgentTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,13 +48,20 @@ fun CustomerServiceAgentApp() {
         startDestination = Routes.SPLASH_SCREEN
     ) {
         composable(Routes.SPLASH_SCREEN) {
-
+            SplashScreen(navController = navController)
         }
         composable(Routes.LOGIN_SCREEN) {
-
+            LoginScreen(navController = navController)
         }
         composable(Routes.HOME_SCREEN) {
-
+            HomeScreen(navController = navController)
+        }
+        composable(
+            route = Routes.THREAD_SCREEN + "/{threadId}",
+            arguments = listOf(navArgument("threadId") { type = NavType.IntType })
+        ) {
+            val threadId = it.arguments!!.getInt("threadId")
+            ThreadScreen(navController = navController, threadId = threadId)
         }
     }
 }
