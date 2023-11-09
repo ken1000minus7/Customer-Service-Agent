@@ -11,7 +11,7 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 class ZonedDateTimeHandler: JsonDeserializer<ZonedDateTime>, JsonSerializer<ZonedDateTime> {
-    private val formatter = DateTimeFormatter.ISO_DATE_TIME
+    private val formatter = DateTimeFormatter.ISO_INSTANT
 
     override fun deserialize(
         json: JsonElement?,
