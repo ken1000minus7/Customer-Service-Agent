@@ -41,7 +41,10 @@ fun ActionDialog(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    OutlinedButton(onClick = action) {
+                    OutlinedButton(onClick = {
+                        action()
+                        dialogState.value = false
+                    }) {
                         Text(text = "Yes")
                     }
                     OutlinedButton(onClick = { dialogState.value = false }) {

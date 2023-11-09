@@ -120,6 +120,8 @@ fun HomeScreen(navController: NavController) {
         when(resetResult) {
             is AgentApiResult.Success -> {
                 notificationState.value = true
+                agentViewModel.resetResult.postValue(null)
+                agentViewModel.getLatestMessages()
             }
             is AgentApiResult.Failure -> {
                 Toast.makeText(context, "Reset failed", Toast.LENGTH_SHORT).show()
@@ -172,6 +174,7 @@ fun ThreadListItem(message: Message, navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(vertical = 5.dp)
             .clickable {
                 navController.navigate(Routes.THREAD_SCREEN + "/${message.threadId}")
             }
@@ -197,13 +200,26 @@ fun ThreadListItem(message: Message, navController: NavController) {
             )
         }
         Column(
-            modifier = Modifier.weight(1f).padding(horizontal = 5.dp)
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 5.dp)
         ) {
-            Text(
-                text = "Sender: $sender $senderId",
-                fontWeight = FontWeight.Light,
-                fontSize = 10.sp
-            )
+            Row(
+                modifier = Modifier.padding(vertical = 5.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Sender: $sender $senderId",
+                    fontWeight = FontWeight.Light,
+                    fontSize = 10.sp,
+                    modifier = Modifier.weight(1f)
+                )
+                Text(
+                    text = "User ${message.userId}",
+                    fontWeight = FontWeight.Light,
+                    fontSize = 10.sp
+                )
+            }
             Text(
                 text = message.body,
                 fontSize = 14.sp,
@@ -211,9 +227,10 @@ fun ThreadListItem(message: Message, navController: NavController) {
                 overflow = TextOverflow.Ellipsis
             )
             Text(
-                text = "Created at ${message.timestamp.format(DateTimeFormatter.ofPattern("d MMM uuuu, h:mm a z"))}",
+                text = "Created at ${message.timestamp.format(DateTimeFormatter.ofPattern("d MMM uuuu, h:mm a"))}",
                 fontWeight = FontWeight.Light,
-                fontSize = 10.sp
+                fontSize = 10.sp,
+                modifier = Modifier.padding(vertical = 5.dp)
             )
         }
         

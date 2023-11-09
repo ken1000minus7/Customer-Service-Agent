@@ -21,6 +21,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.time.ZonedDateTime
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -61,7 +62,7 @@ object AgentApiModule {
             .build()
 
         val gson = GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-            .registerTypeAdapter(ZonedDateTimeHandler::class.java, ZonedDateTimeHandler())
+            .registerTypeAdapter(ZonedDateTime::class.java, ZonedDateTimeHandler())
             .create()
 
         return Retrofit.Builder()
