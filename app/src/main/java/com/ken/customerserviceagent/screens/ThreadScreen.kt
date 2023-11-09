@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.ken.customerserviceagent.components.LoadingAnimation
 import com.ken.customerserviceagent.model.AgentApiResult
 import com.ken.customerserviceagent.model.Message
 import com.ken.customerserviceagent.util.AgentViewModel
@@ -88,6 +89,9 @@ fun ThreadScreen(navController: NavController, threadId: Int) {
                 val messageList = (messagesResult as AgentApiResult.Success<*>).data!! as List<Message>
                 messages.clear()
                 messages.addAll(messageList)
+            }
+            is AgentApiResult.Loading -> {
+                loading = true
             }
             is AgentApiResult.Failure -> {
                 Toast.makeText(context, "Failed to get messages", Toast.LENGTH_SHORT).show()
@@ -142,46 +146,54 @@ fun ThreadScreen(navController: NavController, threadId: Int) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(paddingValues),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                state = lazyListState
-            ) {
-                items(messages) {
-                    MessageListItem(message = it)
-                }
+            if(loading) {
+                LoadingAnimation()
             }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(5.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                OutlinedTextField(
-                    value = text,
-                    onValueChange = { text = it },
-                    placeholder = { Text("Type a message...") },
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Send
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onSend = {
-                            sendMessage()
-                        }
-                    ),
+            else {
+                LazyColumn(
                     modifier = Modifier
-                        .weight(1f)
-                        .padding(end = 8.dp)
-                )
-
-                IconButton(
-                    onClick = sendMessage,
-                    modifier = Modifier.align(Alignment.CenterVertically)
+                        .fillMaxWidth()
+                        .weight(1f),
+                    state = lazyListState,
+                    reverseLayout = true
                 ) {
-                    Icon(imageVector = Icons.Default.Send, contentDescription = "Send", modifier = Modifier.size(30.dp))
+                    items(messages.reversed()) {
+                        MessageListItem(message = it)
+                    }
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(5.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    OutlinedTextField(
+                        value = text,
+                        onValueChange = { text = it },
+                        placeholder = { Text("Type a message...") },
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            imeAction = ImeAction.Send
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onSend = {
+                                sendMessage()
+                            }
+                        ),
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(end = 8.dp)
+                    )
+
+                    IconButton(
+                        onClick = sendMessage,
+                        modifier = Modifier.align(Alignment.CenterVertically)
+                    ) {
+                        Icon(imageVector = Icons.Default.Send, contentDescription = "Send", modifier = Modifier.size(30.dp))
+                    }
                 }
             }
         }

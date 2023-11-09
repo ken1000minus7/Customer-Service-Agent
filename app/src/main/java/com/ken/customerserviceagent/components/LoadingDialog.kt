@@ -23,13 +23,7 @@ import com.ken.customerserviceagent.R
 
 @Composable
 fun LoadingDialog() {
-    val composition = rememberLottieComposition(
-        spec = LottieCompositionSpec.RawRes(R.raw.loadinganimation)
-    )
-    val progress = animateLottieCompositionAsState(
-        composition = composition.value,
-        iterations = LottieConstants.IterateForever
-    )
+
 
     Dialog(onDismissRequest = {  }) {
         ElevatedCard(
@@ -39,16 +33,29 @@ fun LoadingDialog() {
                 modifier = Modifier.padding(10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                LottieAnimation(
-                    composition = composition.value,
-                    progress = progress.value,
-                    modifier = Modifier.size(120.dp)
-                        .padding(10.dp)
-                )
+                LoadingAnimation()
                 Text(text = "Loading", fontSize = 30.sp, fontWeight = FontWeight.Bold)
             }
         }
     }
+}
+
+@Composable
+fun LoadingAnimation() {
+    val composition = rememberLottieComposition(
+        spec = LottieCompositionSpec.RawRes(R.raw.loadinganimation)
+    )
+    val progress = animateLottieCompositionAsState(
+        composition = composition.value,
+        iterations = LottieConstants.IterateForever
+    )
+    LottieAnimation(
+        composition = composition.value,
+        progress = progress.value,
+        modifier = Modifier
+            .size(120.dp)
+            .padding(10.dp)
+    )
 }
 
 @Preview(showBackground = true)

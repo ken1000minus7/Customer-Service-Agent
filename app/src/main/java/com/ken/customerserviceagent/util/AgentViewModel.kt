@@ -58,6 +58,8 @@ class AgentViewModel @Inject constructor(
                 val messages = result.data!! as List<Message>
                 val latestMessages = messages.groupBy { it.threadId }
                     .map { entry -> entry.value.maxBy { it.timestamp } }
+                    .sortedBy { it.timestamp }
+                    .reversed()
                 messagesResult.postValue(AgentApiResult.Success(latestMessages))
             }
         }
